@@ -11,7 +11,7 @@ const {
   // deleteUser,
   // resetPasswordHandler,
   authUser,
-  // logOut,
+  logOut,
 } = require("../controllers/users.controller.js") ;
 const validateResource = require("../middleware/validateResource.js") ;
 const {
@@ -44,7 +44,7 @@ router.post("/signIn", validateResource(SignInSchema), signIn);
 
 router.get("/auth",authUser);
 
-//router.get("/logout",logOut)
+router.get("/logout",logOut)
 
 // router.post(
 //   "/verify/:id/:verificationCode",

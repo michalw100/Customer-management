@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import '../App.css'
 import { GlobalContext } from "../context/GlobalContext";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -41,9 +41,9 @@ function SignIn() {
       const { data } = await axios.post(`http://localhost:3000/api/users/${path}`, values, {
         withCredentials: true,
       });
-       setIsAuth(true)
-       setUser(data)
-       navigate("/home");
+      setIsAuth(true)
+      setUser(data)
+      navigate("/home");
 
     } catch (error) {
       setError(error.response?.data[0]?.message || "An unknown error occurred");
@@ -135,17 +135,13 @@ function SignIn() {
                 </div>
 
               </form>
+              <p className="mt-6 text-sm text-center text-gray-400" onClick={() => setIsLoginPage((prev) => !prev)}>
+                {isLoginPage ? "Don't have an account yet? " : "Already have an account? "}
+                <Link onClick={(e) => { e.preventDefault(); setError(""); }} className="text-blue-500 focus:outline-none focus:underline hover:underline">
+                  {isLoginPage ? "Sign up" : "Sign in"}
+                </Link>
+              </p>
 
-              {!isLoginPage && <p className="mt-6 text-sm text-center text-gray-400"
-                onClick={() => setIsLoginPage((prev) => !prev)}>
-                you have an accunt?
-                <a href="" onClick={(e) => { e.preventDefault(), setError("") }} className="text-blue-500 focus:outline-none focus:underline hover:underline"> Sign in</a>.
-              </p>}
-              {isLoginPage && <p className="mt-6 text-sm text-center text-gray-400"
-                onClick={() => setIsLoginPage((prev) => !prev)}>
-                Don't have an account yet?
-                <a href="" onClick={(e) => { e.preventDefault(), setError("") }} className="text-blue-500 focus:outline-none focus:underline hover:underline"> Sign up</a>.
-              </p>}
             </div>
           </div>
         </div>

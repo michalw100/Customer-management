@@ -59,24 +59,19 @@ exports.authUser = async function (request, response) {
     response.status(200);
     response.json({ success: true, user: decode._doc || decode });
   } catch (error) {
-    response.status(500);
-    response.send([{ error: error.message }]);
-    // response.send({ error: error.message });
-
+    response.status(500).send({ error: error.message });
   }
 };
 
-// exports.logOut = async function (request, response) {
-//   try {
-//     response.clearCookie("token");
-//     //Email Verification
-//     response.status(200);
-//     response.json({ success: true, message: "success to logOut" });
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(500).send(error);
-//   }
-// };
+exports.logOut = async function (request, response) {
+  try {
+    response.clearCookie("token");
+    response.status(200);
+    response.json({ success: true, message: "success to logOut" });
+  } catch (error) {
+    return response.status(500).send(error);
+  }
+};
 
 exports.signUp = async function (request, response) {
   const body = request.body;
