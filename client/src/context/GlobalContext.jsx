@@ -9,17 +9,17 @@ function GlobalProvider({ children }) {
   const [user, setUser] = useState(null);
 
   async function authUser() {
-    // try {
-    //   const { data } = await axios.get("http://localhost:3000/api/users/auth", {
-    //     withCredentials: true,
-    //   });
-    //   if (data.success) {
-    //     setIsAuth(true);
-    //     setUser(data.user);
-    //   }
-    // } catch (error) {
-    //   return error;
-    // }
+    try {
+      const { data } = await axios.get("http://localhost:3000/api/users/auth", {
+        withCredentials: true,
+      });
+      if (data.success) {
+        setIsAuth(true);
+        setUser(data.user);
+      }
+    } catch (error) {
+      return error;
+    }
   }
 
   async function logOut() {
@@ -30,9 +30,9 @@ function GlobalProvider({ children }) {
     // }
   }
 
-  // useEffect(() => {
-  //   authUser();
-  // }, []);
+  useEffect(() => {
+    authUser();
+  }, []);
 
   const value = {
     isAuth,

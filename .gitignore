@@ -1,0 +1,9 @@
+# Dependency directories
+/server/node_modules/
+/server/dist
+/client/node_modules/
+/client/dist
+
+# Environment files
+/server/.env
+/server/log.txt
