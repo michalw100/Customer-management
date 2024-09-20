@@ -4,9 +4,9 @@ const {
   findUserByEmail,
   // findUserById,
   // getAllUsers,
-  // getUser,
+  getUser,
   // deleteUserById,
-  // updateUser
+  updateUser
 } = require("../service/user.service.js");
 const { signJwt, verifyJwt } = require("../utils/jwt.js");
 // const { nanoid } = require("nanoid");
@@ -24,14 +24,20 @@ const { signJwt, verifyJwt } = require("../utils/jwt.js");
 //   }
 // };
 
-// exports.updateUser = async function (request, response) {
+exports.updateUser = async function (request, response) {
 
-//   const id = request.params.id;
-//   const user = await updateUser(id, request.body);
-//   const newUser = await getUser(id);
-//   console.log("updateUser", id, "user", user);
-//   response.send(newUser);
-// };
+try{
+  const id = request.params.id;
+  await updateUser(id, request.body);
+  const newUser = await getUser(id);
+  response.status(200).send(newUser);
+
+}
+ catch (error) {
+  response.status(500).send([{message: error.message }]);
+}
+
+};
 // exports.deleteUser = async function (request, response) {
 
 //   const id = request.params.id;
@@ -56,8 +62,7 @@ exports.authUser = async function (request, response) {
 
     if (!decode) throw new Error("token is not valid");
 
-    response.status(200);
-    response.json({ success: true, user: decode._doc || decode });
+    response.status(200).send({ success: true, user: decode._doc || decode });
   } catch (error) {
     response.status(500).send({ error: error.message });
   }
@@ -66,16 +71,15 @@ exports.authUser = async function (request, response) {
 exports.logOut = async function (request, response) {
   try {
     response.clearCookie("token");
-    response.status(200);
-    response.json({ success: true, message: "success to logOut" });
+    response.status(200).send({ success: true, message: "success to logOut" });
   } catch (error) {
     return response.status(500).send(error);
   }
 };
 
 exports.signUp = async function (request, response) {
-  const body = request.body;
   try {
+    const body = request.body;
     const user = await createUser(body);
 
     const token = signJwt({ ...user }, "accessTokenPrivateKey");
@@ -110,7 +114,7 @@ exports.signIn = async function (request, response) {
 
     response.cookie("token", token, { httpOnly: true, maxAge: 1000 * 60 * 60 });
 
-    return response.status(200).json(user);
+    return response.status(200).send(user);
   } catch (error) {
     return response.status(500).send([{message: error.message }]);
   }

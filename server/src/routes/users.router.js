@@ -2,7 +2,7 @@ const { Router } = require("express") ;
 const {
   // getUsers,
   // getUserById,
-  // updateUser,
+  updateUser,
   signUp,
   signIn,
     // getCurrentUser,
@@ -27,7 +27,7 @@ const router = Router();
 
 const express = require('express');    
 
-//router.put("/updateUser/:id", updateUser);
+router.put("/updateUser/:id", validateResource(SignUpSchema), updateUser);
 
 //router.delete("/deleteUser/:id", deleteUser);
 
