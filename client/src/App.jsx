@@ -20,7 +20,7 @@ function App() {
         <Route path="/signIn" element={<SignIn />} />
         <Route element={isAuth ? <Outlet /> : <Navigate to={"/login"} />}>
           <Route path="/home" element={<> <Nav /><Home /> </>} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<> <Nav /><Profile /> </>} />
         </Route>
         <Route path="*" element={<Navigate to="/signIn" />} />
       </Routes>

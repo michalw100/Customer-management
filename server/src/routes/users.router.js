@@ -8,14 +8,14 @@ const {
     // getCurrentUser,
   // verifyUserHandler,
   // forgotPasswordHandler,
-  // deleteUser,
+  deleteUser,
   // resetPasswordHandler,
   authUser,
   logOut,
 } = require("../controllers/users.controller.js") ;
 const validateResource = require("../middleware/validateResource.js") ;
 const {
-  SignUpSchema,
+  userSchema,
   SignInSchema,
   // forgotPasswordSchema,
   // resetPasswordSchema,
@@ -27,16 +27,16 @@ const router = Router();
 
 const express = require('express');    
 
-router.put("/updateUser/:id", validateResource(SignUpSchema), updateUser);
+router.put("/updateUser/:id", validateResource(userSchema), updateUser);
 
-//router.delete("/deleteUser/:id", deleteUser);
+router.delete("/deleteUser/:id", deleteUser);
 
 //router.get("/", getUsers);
 
 //router.get("/getUserById/:id", getUserById);
 
 
-router.post("/signUp", validateResource(SignUpSchema), signUp);
+router.post("/signUp", validateResource(userSchema), signUp);
 
 router.post("/signIn", validateResource(SignInSchema), signIn);
 

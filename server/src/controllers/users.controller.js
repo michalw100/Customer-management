@@ -5,11 +5,11 @@ const {
   // findUserById,
   // getAllUsers,
   getUser,
-  // deleteUserById,
+  deleteUserById,
   updateUser
 } = require("../service/user.service.js");
 const { signJwt, verifyJwt } = require("../utils/jwt.js");
-// const { nanoid } = require("nanoid");
+const bcrypt = require("bcrypt")
 
 // // if we dont write a type we get error because we define in jsconfig noImplicitAny:true;
 // exports.getUsers = async function (request, response) {
@@ -26,25 +26,40 @@ const { signJwt, verifyJwt } = require("../utils/jwt.js");
 
 exports.updateUser = async function (request, response) {
 
-try{
-  const id = request.params.id;
-  await updateUser(id, request.body);
-  const newUser = await getUser(id);
-  response.status(200).send(newUser);
+  try {
+    const id = request.params.id;
+    const findUser = await findUserByEmail(request.body.user_email);
+    const thisUser = await getUser(id);
+    if (findUser && findUser.user_name != thisUser.user_name) {
+      throw new Error("The email is exists in the system");
+    }
+    const hashedhPassword = await bcrypt.hash(request.body.user_password, 10);
+    request.body.user_password = hashedhPassword;
+    await updateUser(id, request.body);
+    const newUser = await getUser(id);
+    response.status(200).send(newUser);
 
-}
- catch (error) {
-  response.status(500).send([{message: error.message }]);
-}
+  }
+  catch (error) {
+    response.status(500).send([{ message: error.message }]);
+  }
 
 };
-// exports.deleteUser = async function (request, response) {
 
-//   const id = request.params.id;
-//   await deleteUserById(id);
 
-//   response.send("succsed");
-// };
+exports.deleteUser = async function (request, response) {
+  try {
+    const id = request.params.id;
+    await deleteUserById(id);
+
+    response.status(200).send([{ message: "succsed" }]);
+
+  }
+  catch (error) {
+    return response.status(500).send([{ message: error.message }]);
+
+  }
+};
 
 // exports.getUserById = async function (request, response) {
 //   console.log("getUserById");
@@ -61,8 +76,8 @@ exports.authUser = async function (request, response) {
     const decode = await verifyJwt(token, "accessTokenPrivateKey");
 
     if (!decode) throw new Error("token is not valid");
-
-    response.status(200).send({ success: true, user: decode._doc || decode });
+    const user = await getUser(decode._doc._id)
+    response.status(200).send({ success: true, user: user || decode });
   } catch (error) {
     response.status(500).send({ error: error.message });
   }
@@ -85,20 +100,25 @@ exports.signUp = async function (request, response) {
     const token = signJwt({ ...user }, "accessTokenPrivateKey");
 
     response.cookie("token", token, { httpOnly: true, maxAge: 1000 * 60 * 60 });
+    
+    delete user.user_password;
 
-    response.status(201).json(user);
+    response.status(201).send(user);
   } catch (error) {
     if (error.code === 11000) {
       error.response?.data[0]?.message
-      return response.status(409).send([{message: "Account already exist" }]);
+      return response.status(409).send([{ message: "Account already exist" }]);
 
     }
-    return response.status(500).send(error);
+    return response.status(500).send([{ message: error.message }]);
   }
 };
 
 exports.signIn = async function (request, response) {
   try {
+    console.log("request.body")
+    console.log(request.body)
+
     const { user_email, user_password } = request.body;
     const user = await findUserByEmail(user_email);
     if (!user) {
@@ -116,7 +136,7 @@ exports.signIn = async function (request, response) {
 
     return response.status(200).send(user);
   } catch (error) {
-    return response.status(500).send([{message: error.message }]);
+    return response.status(500).send([{ message: error.message }]);
   }
 };
 

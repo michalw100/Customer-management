@@ -1,6 +1,6 @@
 const { object, string } = require("zod");
 
-exports.SignUpSchema = object({
+exports.userSchema = object({
   body: object({
     user_name: string({
       required_error: "name is required",

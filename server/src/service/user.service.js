@@ -20,9 +20,9 @@ exports.getUser = function (id) {
   return UserModel.findById(id);
 };
 
-// exports.deleteUserById = function (id) {
-//   return UserModel.findByIdAndDelete(id);
-// };
+exports.deleteUserById = function (id) {
+  return UserModel.findByIdAndDelete(id);
+};
 
 exports.updateUser = async function (id,body) {
   return await UserModel.findByIdAndUpdate(id,body);

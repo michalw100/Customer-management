@@ -1,9 +1,20 @@
-// Profile.js
 import React from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ProfileForm from '../forms/ProfileFrom';
-import { PiPasswordDuotone } from "react-icons/pi";
 
-export default function Profile({ toggleModal }) {
+export default function Profile() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { isModalOpen } = location.state || { isModalOpen: false };
+
+    const toggleModal = () => {
+        navigate(-1); 
+    };
+
+    if (!isModalOpen) {
+        return null;
+    }
+
     return (
         <div id="default-modal" className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
             <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 w-[600px]">
@@ -31,7 +42,6 @@ export default function Profile({ toggleModal }) {
                         <span className="sr-only">Close modal</span>
                     </button>
                 </div>
-
                 <div className="p-4 md:p-5 space-y-4">
                     <ProfileForm toggleModal={toggleModal} />
                 </div>
