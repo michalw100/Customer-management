@@ -1,4 +1,3 @@
-
 const validateResource =
   (schema) =>
   (req, res, next) => {
@@ -9,8 +8,8 @@ const validateResource =
             params: req.params,
         });
       next();
-    } catch (e) {
-      return res.status(400).send(e.errors);
+    } catch (error) {
+      return res.status(400).send(error.errors);
     }
   };
 

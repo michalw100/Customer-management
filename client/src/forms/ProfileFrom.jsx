@@ -1,9 +1,9 @@
 import React, { useContext, useState } from 'react'
 import { GlobalContext } from '../context/GlobalContext';
-import { PiPasswordDuotone } from "react-icons/pi";
 import { SiGmail } from "react-icons/si";
 import { CgProfile } from "react-icons/cg";
 import axios from 'axios';
+import { IoEyeOffSharp, IoEyeSharp } from "react-icons/io5";
 
 export default function ProfileForm({ toggleModal }) {
     const { user, setUser, logOut } = useContext(GlobalContext);
@@ -14,6 +14,7 @@ export default function ProfileForm({ toggleModal }) {
         user_name: user?.user_name,
         user_password: "",
     });
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleChange = (e) => {
         setValues({
@@ -30,7 +31,7 @@ export default function ProfileForm({ toggleModal }) {
             const { data } = await axios.put(`http://localhost:3000/api/users/updateUser/${user._id}`, values);
             setError("");
             setUser(data);
-            toggleModal(); 
+            toggleModal();
         } catch (error) {
             setError(error.response?.data[0]?.message || error.message || "An error occurred");
         }
@@ -39,7 +40,7 @@ export default function ProfileForm({ toggleModal }) {
     const handleDelete = async () => {
         try {
             const response = await axios.delete(`http://localhost:3000/api/users/deleteUser/${user._id}`);
-            toggleModal(); 
+            toggleModal();
             setUser(null);
             logOut();
         } catch (error) {
@@ -78,20 +79,25 @@ export default function ProfileForm({ toggleModal }) {
                     className="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="elonmusk" />
             </div>
             <label htmlFor="user_password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your password</label>
-
             <div className="flex mb-6">
                 <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border rounded-e-0 border-gray-300 border-e-0 rounded-s-md dark:bg-gray-600 dark:text-gray-400 dark:border-gray-600">
-                    <PiPasswordDuotone />
+                    {showPassword ? (
+                        <button><IoEyeOffSharp onClick={() => setShowPassword(false)} /></button>
+                    ) : (
+                        <button><IoEyeSharp onClick={() => setShowPassword(true)} /></button>
+                    )}
                 </span>
                 <input
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     id="user_password"
                     name="user_password"
                     value={values.user_password}
                     onChange={handleChange}
-
-                    className="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="******" />
+                    className="rounded-none rounded-e-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="your password or a new password"
+                />
             </div>
+
             {error && <p className="block mb-2 mt-2 text-sm font-medium text-red-600 dark:text-red-400">{error}</p>}
             <div className="flex items-center justify-end space-x-4">
                 <button

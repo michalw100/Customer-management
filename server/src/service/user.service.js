@@ -8,8 +8,6 @@ exports.findUserByEmail = function (user_email) {
   return UserModel.findOne({ user_email });
 };
 
-
-
 exports.getUsers = function () {
   return UserModel.find();
 };

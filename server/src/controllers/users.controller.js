@@ -12,7 +12,7 @@ const bcrypt = require("bcrypt")
 
 exports.getUsers = async function (request, response) {
   try {
-    const users = await getAllUsers();
+    const users = await getUsers();
     response.status(200).send(users);
   } catch (error) {
     response.status(500).send([{ message: error.message }]);

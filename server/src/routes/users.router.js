@@ -15,7 +15,6 @@ const {
   SignInSchema,
 } = require("../schema/users.schema.js") ;
 
-
 const router = Router();
 
 const express = require('express');    
@@ -27,7 +26,6 @@ router.delete("/deleteUser/:id", deleteUser);
 router.get("/", getUsers);
 
 router.get("/getUser/:id", getUserById);
-
 
 router.post("/signUp", validateResource(userSchema), signUp);
 

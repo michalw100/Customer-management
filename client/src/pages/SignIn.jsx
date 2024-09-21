@@ -60,9 +60,8 @@ function SignIn() {
               <h2 className="text-2xl font-bold text-white sm:text-3xl">My web site</h2>
 
               <p className="max-w-xl mt-3 text-gray-300">
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. In
-                autem ipsa, nulla laboriosam dolores, repellendus perferendis libero suscipit nam temporibus
-                molestiae
+              Web application for customer management
+              To see more of the apps I built go to https://github.com/michalw100
               </p>
             </div>
           </div>
@@ -108,8 +107,6 @@ function SignIn() {
                 <div className="mt-6">
                   <div className="flex justify-between mb-2">
                     <label htmlFor="user_password" className="text-sm text-gray-600 dark:text-gray-200">Password</label>
-                    {isLoginPage &&
-                      (<a href="" className="text-sm text-gray-400 focus:text-blue-500 hover:text-blue-500 hover:underline">Forgot password?</a>)}
                   </div>
 
                   <input id="user_password"
