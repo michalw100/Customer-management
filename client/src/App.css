@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.image{
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}

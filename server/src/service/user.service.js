@@ -8,13 +8,11 @@ exports.findUserByEmail = function (user_email) {
   return UserModel.findOne({ user_email });
 };
 
-// exports.findUserById = function (id) {
-//   return UserModel.findById(id);
-// };
 
-// exports.getAllUsers = function () {
-//   return UserModel.find();
-// };
+
+exports.getUsers = function () {
+  return UserModel.find();
+};
 
 exports.getUser = function (id) {
   return UserModel.findById(id);

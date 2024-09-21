@@ -2,8 +2,7 @@ const { compare } = require("bcrypt");
 const {
   createUser,
   findUserByEmail,
-  // findUserById,
-  // getAllUsers,
+  getUsers,
   getUser,
   deleteUserById,
   updateUser
@@ -11,18 +10,14 @@ const {
 const { signJwt, verifyJwt } = require("../utils/jwt.js");
 const bcrypt = require("bcrypt")
 
-// // if we dont write a type we get error because we define in jsconfig noImplicitAny:true;
-// exports.getUsers = async function (request, response) {
-//   try {
-//     console.log("getUsers");
-
-//     const users = await getAllUsers();
-//     response.status(200);
-//     response.json(users);
-//   } catch (error) {
-//     response.status(500).send(error);
-//   }
-// };
+exports.getUsers = async function (request, response) {
+  try {
+    const users = await getAllUsers();
+    response.status(200).send(users);
+  } catch (error) {
+    response.status(500).send([{ message: error.message }]);
+  }
+};
 
 exports.updateUser = async function (request, response) {
 
@@ -61,13 +56,16 @@ exports.deleteUser = async function (request, response) {
   }
 };
 
-// exports.getUserById = async function (request, response) {
-//   console.log("getUserById");
+exports.getUserById = async function (request, response) {
+  try {
+    const id = request.params.id;
+    const user = await getUser(id);
+    response.status(200).send(user);
 
-//   const id = request.params.id;
-//   const user = await getUser(id);
-//   response.send(user);
-// };
+  } catch (error) {
+    return response.status(500).send([{ message: error.message }]);
+  }
+};
 
 exports.authUser = async function (request, response) {
   try {
@@ -100,7 +98,7 @@ exports.signUp = async function (request, response) {
     const token = signJwt({ ...user }, "accessTokenPrivateKey");
 
     response.cookie("token", token, { httpOnly: true, maxAge: 1000 * 60 * 60 });
-    
+
     delete user.user_password;
 
     response.status(201).send(user);
@@ -116,9 +114,6 @@ exports.signUp = async function (request, response) {
 
 exports.signIn = async function (request, response) {
   try {
-    console.log("request.body")
-    console.log(request.body)
-
     const { user_email, user_password } = request.body;
     const user = await findUserByEmail(user_email);
     if (!user) {
@@ -139,98 +134,3 @@ exports.signIn = async function (request, response) {
     return response.status(500).send([{ message: error.message }]);
   }
 };
-
-// exports.getCurrentUser = async function (request, response) {
-//   try {
-//     return response.status(200).json(response.locals.user);
-//   } catch (error) {
-//     console.log(error);
-//     return response.status(500).send(error);
-//   }
-// };
-
-// exports.verifyUserHandler = async function (req, res) {
-//   const id = req.params.id;
-//   const verificationCode = req.params.verificationCode;
-
-//   // find the user by id
-//   const user = await findUserById(id);
-
-//   if (!user) {
-//     return res.send("Could not verify user");
-//   }
-
-//   // check to see if they are already verified
-//   if (user.verified) {
-//     return res.send("User is already verified");
-//   }
-
-//   // check to see if the verificationCode matches
-//   if (user.verificationCode === verificationCode) {
-//     user.verified = true;
-
-//     await user.save();
-
-//     return res.json({ message: "User successfully verified" });
-//   }
-
-//   return res.send("Could not verify user");
-// };
-
-// exports.forgotPasswordHandler = async function (req, res) {
-//   const message =
-//     "If a user with that email is registered you will receive a password reset email";
-
-//   const { user_email } = req.body;
-
-//   const user = await findUserByEmail(user_email);
-
-//   if (!user) {
-//     return res.send(message);
-//   }
-
-//   if (!user.verified) {
-//     return res.send("User is not verified");
-//   }
-
-//   const passwordResetCode = nanoid();
-
-//   user.passwordResetCode = passwordResetCode;
-
-//   await user.save();
-
-//   // Email Verification
-
-//   // await sendEmail({
-//   //   to: user.email,
-//   //   from: "test@example.com",
-//   //   subject: "Reset your password",
-//   //   text: `Password reset code: ${passwordResetCode}. Id ${user._id}`,
-//   // });
-
-//   return res.send(message);
-// };
-
-// exports.resetPasswordHandler = async function (req, res) {
-//   const { id, passwordResetCode } = req.params;
-
-//   const { user_password } = req.body;
-
-//   const user = await findUserById(id);
-
-//   if (
-//     !user ||
-//     !user.passwordResetCode ||
-//     user.passwordResetCode !== passwordResetCode
-//   ) {
-//     return res.status(400).send("Could not reset user password");
-//   }
-
-//   user.passwordResetCode = null;
-
-//   user.user_password = user_password;
-
-//   await user.save();
-
-//   return res.send("Successfully updated password");
-// };
