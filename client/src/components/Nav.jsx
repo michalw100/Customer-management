@@ -13,16 +13,8 @@ export default function Nav() {
     navigate('/profile', { state: { isModalOpen: true } });
   };
 
-  const handleLogout = () => {
-    setModalOpen(true);
-  };
-
   const confirmLogout = () => {
     logOut();
-    setModalOpen(false);
-  };
-
-  const cancelLogout = () => {
     setModalOpen(false);
   };
 
@@ -49,7 +41,7 @@ export default function Nav() {
                   </button>
                 </li>
                 <li>
-                  <button onClick={handleLogout}>Logout</button>
+                  <button onClick={()=>setModalOpen(true)}>Logout</button>
                 </li>
               </ul>
             </div>
@@ -59,7 +51,7 @@ export default function Nav() {
 
       <Logout
         onConfirm={confirmLogout} 
-        onCancel={cancelLogout} 
+        onCancel={()=>setModalOpen(false)} 
         isVisible={isModalOpen} 
       />
     </>
