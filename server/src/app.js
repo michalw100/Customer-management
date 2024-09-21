@@ -10,7 +10,7 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: ["http://localhost:5173"],
+    origin: process.env.CORSURI,
     optionsSuccessStatus: 200,
   })
 );

@@ -4,5 +4,5 @@ A few steps for the project to run:
 2. cd server --> npm install --> npm run dev.
 3. Open a new terminal and enter the client folder
 4. cd client --> npm install --> npm run dev.
-5. The project is not connected to my database - to maintain privacy. Paste the link to your mongoDB in the file - connectTodb or create .env file with URIDB and paste the link.
+5. create .env file and paste the link to your mongoDB ina variable URIDB and paste this link "http://localhost:5173" in a variable CORSURI
 enjoy :)
