@@ -6,4 +6,3 @@
 
 # Environment files
 /server/.env
-/server/log.txt
