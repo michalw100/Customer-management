@@ -1,10 +1,8 @@
 # Web application for customer management
 A few steps for the project to run:
-1. Open the terminal and enter the server folder -  cd server
-2. Download node modules by the command npm i.
-3. Run the npm run dev command
-3. Open a new terminal and enter the client folder - cd client
-4. Download node modules by the command npm i.
-5. Run the npm run dev command.
-6. The project is not connected to my database - to maintain privacy. Paste the link to your mongoDB in the file - connectTodb.
+1. Open the terminal and enter the server folder 
+2. cd server --> npm install --> npm run dev.
+3. Open a new terminal and enter the client folder
+4. cd client --> npm install --> npm run dev.
+5. The project is not connected to my database - to maintain privacy. Paste the link to your mongoDB in the file - connectTodb or create .env file with URIDB and paste the link.
 enjoy :)
