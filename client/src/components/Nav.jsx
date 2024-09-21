@@ -31,7 +31,7 @@ export default function Nav() {
       <nav className="navbar bg-white dark:bg-gray-700 shadow-md">
         <div className="container mx-auto px-4">
           <div className="flex-1">
-            <p className="btn btn-ghost text-xl">HI</p>
+            <p className="btn btn-ghost text-xl">My web site</p>
           </div>
           <p className="p-3">Hi {user?.user_name}</p>
           <div className="flex-none">
